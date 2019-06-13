@@ -4,136 +4,147 @@
     <ngb-tab title="Actor">
       <ng-template ngbTabContent *ngIf="!actorTableFlag">
           <br><br>
-          <h2>Search by Name</h2>
-          <label>First Name</label>
-          <input class="form-control" type="text" placeholder="Ex: John" [(ngModel)]="firstname"><br>
-          <label>Last Name</label>
-          <input class="form-control" type="text" placeholder="Ex: Doe" [(ngModel)]="lastname"><br>
-          <button type="button" class="btn btn-primary" (click)="getActorByName()">Search</button>
-
-          <div class="text-center">
-            <h1>OR</h1>
-          </div>
-          <br>
-          <div *ngIf="!advAgeFlag">
-              <h2>Search by Age</h2>
-              <label>Age</label>
-              <input class="form-control" type="number" placeholder="23" [(ngModel)]="minAge"><br>
-              <button type="button" class="btn btn-primary" (click)="getActorByAge()">Search</button>
-              <button type="button" class="btn btn-warning" (click)="advAgeFlag = true;">Adv Range Search</button>
-          </div>
-          <div *ngIf="advAgeFlag">
-              <h2>Search by Age Range</h2>
-              <label>Min Age</label>
-              <input class="form-control" type="number" placeholder="Minimum Age" [(ngModel)]="minAge"><br>
-
-              <label>Max Age</label>
-              <input class="form-control" type="number" placeholder="Maximum Age" [(ngModel)]="maxAge"><br>
-              <button type="button" class="btn btn-primary" (click)="getActorByAgeAdv()">Search</button>
-              <button type="button" class="btn btn-warning" (click)="advAgeFlag = false;">Simple Age Search</button>
-          </div>
-          
-
-
+          <ngb-tabset type="pills" justify="center">
+              <ngb-tab title="Search By Name">
+                <ng-template ngbTabContent>
+                    <br>
+                    <label>First Name</label>
+                    <input class="form-control" type="text" placeholder="Ex: John" [(ngModel)]="firstname"><br>
+                    <label>Last Name</label>
+                    <input class="form-control" type="text" placeholder="Ex: Doe" [(ngModel)]="lastname"><br>
+                    <button type="button" class="btn btn-primary" (click)="getActorByName889()">Search</button>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab title="Search By Age">
+                  <ng-template ngbTabContent>
+                      <br>
+                      <div *ngIf="!advAgeFlag">
+                          <label>Age</label>
+                          <input class="form-control" type="number" placeholder="23" [(ngModel)]="minAge"><br>
+                          <button type="button" class="btn btn-primary" (click)="getActorByAge889()">Search</button>
+                          <button type="button" class="btn btn-warning" (click)="advAgeFlag = true;">Adv Range Search</button>
+                      </div>
+                      <div *ngIf="advAgeFlag">
+                          <label>Min Age</label>
+                          <input class="form-control" type="number" placeholder="Minimum Age" [(ngModel)]="minAge"><br>
+            
+                          <label>Max Age</label>
+                          <input class="form-control" type="number" placeholder="Maximum Age" [(ngModel)]="maxAge"><br>
+                          <button type="button" class="btn btn-primary" (click)="getActorByAgeAdv889()">Search</button>
+                          <button type="button" class="btn btn-warning" (click)="advAgeFlag = false;">Simple Age Search</button>
+                      </div>
+                  </ng-template>
+              </ngb-tab>
+          </ngb-tabset>         
       </ng-template>
       <ng-template ngbTabContent *ngIf="actorTableFlag">
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Age</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let actor of actors; index as i">
-                <th scope="row">{{ i+1 }}</th>
-                <td>{{ actor.firstname }}</td>
-                <td>{{ actor.lastname }}</td>
-                <td>{{ actor.age | number }}</td>
-                <td>
-                  <button type="button" class="btn btn-danger" (click)="onActorDelete(actor.id)">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <br>
+          <ngb-accordion #a="ngbAccordion" closeOthers="true" activeIds="static-0">
+              <ngb-panel *ngFor="let actor of actors; index as i" id="static-{{i}}">
+                <ng-template ngbPanelHeader>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">{{ actor.firstname + ' ' + actor.lastname }}</button>
+                  </div>
+                </ng-template>
+                <ng-template ngbPanelContent class="pb-1">
+                  <h4 class="card-title">{{ actor.firstname + ' ' + actor.lastname }}</h4><br>
+                  <div class="row">
+                    <div class="col">
+                        <h6 class="card-subtitle mb-2 text-muted">First Name: </h6><p>{{ actor.firstname }}</p><br>
+                        <h6 class="card-subtitle mb-2 text-muted">Age: </h6><p>{{ actor.age | number }}</p><br>
+                        <h6 class="card-subtitle mb-2 text-muted">Gender: </h6><p>{{ actor.gender }}</p>
+                    </div>
+                    <div class="col">
+                        <h6 class="card-subtitle mb-2 text-muted">Last Name: </h6><p>{{ actor.lastname }}</p><br>
+                        <h6 class="card-subtitle mb-2 text-muted">ID: </h6><p>{{ actor.id }}</p><br>
+                        <h6 class="card-subtitle mb-2 text-muted">Movies: </h6>
+                      <p *ngFor="let movie of actor.movies; index as i">{{ movie.title }}<br></p>
+                    </div>
+                  </div>
+                  <br>
+                  <button type="button" class="btn btn-danger float-right" (click)="onActorDelete(actor.id)">Delete</button><br><br>
+                </ng-template>
+              </ngb-panel>
+          </ngb-accordion>
           <br>
           <button type="button" class="btn btn-info" (click)="actorTableFlag = false;">Back</button>
       </ng-template>
     </ngb-tab>
     <ngb-tab title="Movie">
-      <ng-template ngbTabContent>
-          <ng-template ngbTabContent *ngIf="!actorTableFlag">
-              <br><br>
-              <h2>Search by Title</h2>
-              <label>Title</label>
-              <input class="form-control" type="text" placeholder="Ex: The Dark Knight" [(ngModel)]="title"><br>
-              <button type="button" class="btn btn-primary" (click)="getMovieByTitle()">Search</button>
+        <ng-template ngbTabContent *ngIf="!movieTableFlag">
+            <br><br>
+            <ngb-tabset type="pills" justify="center">
+                <ngb-tab title="Search By Title">
+                  <ng-template ngbTabContent>
+                      <br>
+                      <label>Title</label>
+                      <input class="form-control" type="text" placeholder="Ex: The Dark Knight" [(ngModel)]="title"><br>
+                      <button type="button" class="btn btn-primary" (click)="getMovieByTitle889()">Search</button>
+                  </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Search By Language">
+                    <ng-template ngbTabContent>
+                        <br>
+                        <label>Language</label>
+                        <input class="form-control" type="text" placeholder="Ex: Spanish" [(ngModel)]="language"><br>
+                        <button type="button" class="btn btn-primary" (click)="getMovieByLanguage889()">Search</button>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Search By Year">
+                    <ng-template ngbTabContent>
+                        <br>
+                        <div *ngIf="!advYearFlag">
+                            <label>Year</label>
+                            <input class="form-control" type="number" placeholder="Enter Year" [(ngModel)]="minYear"><br>
+                            <button type="button" class="btn btn-primary" (click)="getMovieByYear889()">Search</button>
+                            <button type="button" class="btn btn-warning" (click)="advYearFlag = true;">Adv Range Search</button>
+                        </div>
+                        <div *ngIf="advYearFlag">
+                            <label>Min Year</label>
+                            <input class="form-control" type="number" placeholder="Minimum Year" [(ngModel)]="minYear"><br>
+              
+                            <label>Max Year</label>
+                            <input class="form-control" type="number" placeholder="Maximum Year" [(ngModel)]="maxYear"><br>
+                            <button type="button" class="btn btn-primary" (click)="getMovieByYearAdv889()">Search</button>
+                            <button type="button" class="btn btn-warning" (click)="advYearFlag = false;">Simple Age Search</button>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+              </ngb-tabset>          
+        </ng-template>
+        <ng-template ngbTabContent *ngIf="movieTableFlag">
+            <br>
+            <ngb-accordion #a="ngbAccordion" closeOthers="true" activeIds="static-0">
+                <ngb-panel *ngFor="let movie of movies; index as i" id="static-{{i}}">
+                  <ng-template ngbPanelHeader>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <button ngbPanelToggle class="btn btn-link container-fluid text-left pl-0">{{ movie.title }}</button>
+                    </div>
+                  </ng-template>
+                  <ng-template ngbPanelContent class="pb-1">
+                    <h4 class="card-title">{{ movie.title }}</h4><br>
+                    <div class="row">
+                      <div class="col">
+                          <h6 class="card-subtitle mb-2 text-muted">Year: </h6><p>{{ movie.year }}</p><br>
+                          <h6 class="card-subtitle mb-2 text-muted">Runtime: </h6><p>{{ movie.runtime | number }}</p><br>
+                          <h6 class="card-subtitle mb-2 text-muted">ID: </h6><p>{{ movie.id }}</p><br>
 
-              <div class="text-center">
-                <h1>OR</h1>
-              </div>
-
-              <label>Language</label>
-              <input class="form-control" type="text" placeholder="Ex: Spanish" [(ngModel)]="langauge"><br>
-              <button type="button" class="btn btn-primary" (click)="getMovieByLanguage()">Search</button>
-
-              <div class="text-center">
-                <h1>OR</h1>
-              </div>
-              <br>
-              <div *ngIf="!advYearFlag">
-                  <h2>Search by Year</h2>
-                  <label>Year</label>
-                  <input class="form-control" type="number" placeholder="Enter Year" [(ngModel)]="minYear"><br>
-                  <button type="button" class="btn btn-primary" (click)="getMovieByYear()">Search</button>
-                  <button type="button" class="btn btn-warning" (click)="advYearFlag = true;">Adv Range Search</button>
-              </div>
-              <div *ngIf="advYearFlag">
-                  <h2>Search by Year Range</h2>
-                  <label>Min Year</label>
-                  <input class="form-control" type="number" placeholder="Minimum Year" [(ngModel)]="minYear"><br>
-    
-                  <label>Max Year</label>
-                  <input class="form-control" type="number" placeholder="Maximum Year" [(ngModel)]="maxYear"><br>
-                  <button type="button" class="btn btn-primary" (click)="getMovieByYearAdv()">Search</button>
-                  <button type="button" class="btn btn-warning" (click)="advYearFlag = false;">Simple Age Search</button>
-              </div>
-          </ng-template>
-          <ng-template ngbTabContent *ngIf="movieTableFlag">
-              <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Title</th>
-                      <th scope="col">Year</th>
-                      <th scope="col">Run Time</th>
-                      <th scope="col">Release Country</th>
-                      <th scope="col">Language</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let movie of movies; index as i">
-                      <th scope="row">{{ i+1 }}</th>
-                      <td>{{ movie.title }}</td>
-                      <td>{{ movie.year | number}}</td>
-                      <td>{{ movie.runtime | number }}</td>
-                      <td>{{ movie.release_country }}</td>
-                      <td>{{ movie.language }}</td>
-
-                      <td>
-                        <button type="button" class="btn btn-danger" (click)="onMovieDelete(movie.id)">Delete</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <br>
-                <button type="button" class="btn btn-info" (click)="movieTableFlag = false;">Back</button>
-            </ng-template>
-      </ng-template>
+                      </div>
+                      <div class="col">
+                          <h6 class="card-subtitle mb-2 text-muted">Release Country: </h6><p>{{ movie.release_country }}</p><br>
+                          <h6 class="card-subtitle mb-2 text-muted">Language: </h6><p>{{ movie.language }}</p><br>
+                          <h6 class="card-subtitle mb-2 text-muted">Actors: </h6>
+                        <p *ngFor="let actor of movie.actors; index as i">{{ actor.firstname + ' ' + actor.lastname }}<br></p>
+                      </div>
+                    </div>
+                    <br>
+                    <button type="button" class="btn btn-danger float-right" (click)="onMovieDelete(movie.id)">Delete</button><br><br>
+                  </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+            <br>
+            <button type="button" class="btn btn-info" (click)="movieTableFlag = false;">Back</button>
+        </ng-template>
     </ngb-tab>
   </ngb-tabset>
 

@@ -31,49 +31,50 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
-  // fetchActorData() {
-  //   this.sailsService.getActors()
-  //     .subscribe(res => this.actors = res.actors);
-  // }
-
-  getActorByAge() {
+  getActorByAge889() {
     this.maxAge = this.minAge;
-    this.sailsService.getActorByAge(this.minAge, this.maxAge)
+    this.sailsService.getActorByAge889(this.minAge, this.maxAge)
       .subscribe((res) => {this.actors = res.actor; this.actorTableFlag = true; });
     this.maxAge = null;
   }
 
-  getActorByAgeAdv() {
-    this.sailsService.getActorByAge(this.minAge, this.maxAge)
+  getActorByAgeAdv889() {
+    this.sailsService.getActorByAge889(this.minAge, this.maxAge)
       .subscribe((res) => {this.actors = res.actor; this.actorTableFlag = true; });
   }
 
-  getActorByName() {
-    this.sailsService.getActorByName(this.firstname, this.lastname)
+  getActorByName889() {
+    this.sailsService.getActorByName889(this.firstname, this.lastname)
       .subscribe((res) => {this.actors = res.actor; this.actorTableFlag = true; });
   }
 
-  onActorDelete(id: number) {
-    this.sailsService.deleteActor(id).subscribe(() => this.actors = this.actors.filter((actor) => { return actor.id != id }));
+  onActorDelete889(id: number) {
+    this.sailsService.deleteActor889(id).subscribe(() => this.actors = this.actors.filter((actor) => { return actor.id != id }));
   }
 
-  getMovieByYear() {
-
+  getMovieByYear889() {
+    this.maxYear = this.minYear;
+    this.sailsService.getMovieByYear889(this.minYear, this.maxYear)
+      .subscribe((res) => {this.movies = res.movies; this.movieTableFlag = true; });
+    this.maxYear = null;
   }
 
-  getMovieByYearAdv() {
-
+  getMovieByYearAdv889() {
+    this.sailsService.getMovieByYear889(this.minYear, this.maxYear)
+      .subscribe((res) => {this.movies = res.movies; this.movieTableFlag = true; });
   }
 
-  getMovieByTitle() {
-
+  getMovieByTitle889() {
+    this.sailsService.getMovieByTitle889(this.title) 
+      .subscribe((res) => { this.movies = res.movie; this.movieTableFlag = true; })
   }
 
-  getMovieByLanguage() {
-
+  getMovieByLanguage889() {
+    this.sailsService.getMovieByLanguage889(this.language)
+      .subscribe((res) => { this.movies = res.movies; this.movieTableFlag = true; })
   }
 
-  onMovieDelete(id: number) {
-    this.sailsService.deleteMovie(id).subscribe(() => this.movies = this.movies.filter((movie) => { return movie.id != id }));
+  onMovieDelete889(id: number) {
+    this.sailsService.deleteMovie889(id).subscribe(() => this.movies = this.movies.filter((movie) => { return movie.id != id }));
   }
 }

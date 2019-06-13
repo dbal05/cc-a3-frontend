@@ -15,22 +15,49 @@ export class SailsService {
 
   private options = { headers: new HttpHeaders().set('Content-Type', 'application/json'), params: {}};
 
-  getActors () {
+  getActors889() {
     return this.http.get<any>(API_URL + '/actor/getActors889', this.options)
       .pipe(
         catchError(err => throwError(new Error('Get Actors'))),
       )
   }
 
-  getMovies() {
+  getMovies889() {
     return this.http.get<any>(API_URL + '/movie/getMovies889', this.options)
       .pipe(
         catchError(err => throwError(new Error('Get Movies'))),
       )
   }
 
-  getActorByName (firstname: string, lastname: string) {
-    this.options.params = {firstname: firstname, lastname: lastname};
+  getMovieByYear889(minYear: number, maxYear: number) {
+    this.options.params = minYear && maxYear ? {minYear: minYear, maxYear: maxYear} : minYear ? {minYear: minYear} : maxYear ? {maxYear: maxYear} : {};
+    console.log(this.options.params);
+    return this.http.get<any>(API_URL + '/movie/getMoviesByYear889', this.options) 
+      .pipe(
+        catchError(err => throwError(new Error ('Get Movie By Year'))),
+      )
+  }
+
+  getMovieByTitle889(title: string) {
+    this.options.params = title ? {title: title} : {};
+    return this.http.get<any>(API_URL + '/movie/getMovieByTitle889', this.options)
+      .pipe(
+        catchError(err => throwError(new Error ('Get Movie By Title'))),
+      )
+  }
+
+  getMovieByLanguage889(lang: string) {
+    this.options.params = lang ? {language: lang} : {};
+    return this.http.get<any>(API_URL + '/movie/getMoviesByLanguage889', this.options)
+      .pipe(
+        catchError(err => throwError(new Error ('Get Movie By Language'))),
+      )
+  }
+
+  getActorByName889(firstname: string, lastname: string) {
+    this.options.params = firstname && lastname ? {firstname: firstname, lastname: lastname} : 
+      firstname ? {firstname: firstname} : 
+      lastname ? {lastname: lastname} : {};
 
     return this.http.get<any>(API_URL + '/actor/getActorByName889', this.options)
       .pipe(
@@ -38,22 +65,15 @@ export class SailsService {
       )
   }
 
-  getActorByAge (minAge: number, maxAge: number) {
-    if (minAge && maxAge) {
-      this.options.params = {minAge: minAge, maxAge: maxAge};
-    } else if (minAge) {
-      this.options.params = {minAge: minAge};
-    } else if (maxAge) {
-      this.options.params = {maxAge: maxAge};
-    }
-
+  getActorByAge889(minAge: number, maxAge: number) {
+    this.options.params = minAge && maxAge ? {minAge: minAge, maxAge: maxAge} : minAge ? {minAge: minAge} : maxAge ? {maxAge: maxAge} : {};
     return this.http.get<any>(API_URL + '/actor/getActorByAge889', this.options)
       .pipe(
         catchError(err => throwError(new Error('Get Actor By Age'))),
       )
   }
 
-  deleteActor (id: number) {
+  deleteActor889(id: number) {
     const url = `${API_URL}/actor/deleteActorById889?id=${id}`;
     return this.http.delete(url, this.options)
       .pipe(
@@ -61,7 +81,7 @@ export class SailsService {
       )
   }
 
-  deleteMovie (id: number) {
+  deleteMovie889(id: number) {
     const url = `${API_URL}/movie/deleteMovieById889?id=${id}`;
     return this.http.delete(url, this.options)
       .pipe(
